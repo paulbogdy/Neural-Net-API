@@ -100,7 +100,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="validators" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="testing" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Neural-Net-API" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -108,11 +108,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ML/handlers" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ML/handlers/validators.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testing.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -121,34 +121,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests in A:/Serious Projects/Neural-Net-API/ML/tests/test_nets.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="whateva" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Neural-Net-API" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ML/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/ML/tests/test_nets.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/whateva.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.validators" />
-      <item itemvalue="Python.tensorflow_comparison" />
       <item itemvalue="Python.playin_with_multiprocessing" />
-      <item itemvalue="Python tests.Unittests in A:/Serious Projects/Neural-Net-API/ML/tests/test_nets.py" />
+      <item itemvalue="Python.tensorflow_comparison" />
+      <item itemvalue="Python.testing" />
+      <item itemvalue="Python.whateva" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.whateva" />
+        <item itemvalue="Python.testing" />
         <item itemvalue="Python.tensorflow_comparison" />
         <item itemvalue="Python.playin_with_multiprocessing" />
-        <item itemvalue="Python.validators" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -164,6 +171,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="395" y="110" key="#Inspections" timestamp="1606133899936">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="395" y="110" key="#Inspections/0.0.1536.864@0.0.1536.864" timestamp="1606133899936" />
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605877021543">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -176,53 +187,53 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="499" y="179" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.864@0.0.1536.864" timestamp="1604478267398" />
-    <state x="549" y="187" key="FileChooserDialogImpl" timestamp="1605701418750">
+    <state x="549" y="187" key="FileChooserDialogImpl" timestamp="1606553303409">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1605701418750" />
-    <state width="1515" height="223" key="GridCell.Tab.0.bottom" timestamp="1606035399774">
+    <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1606553303409" />
+    <state width="1515" height="223" key="GridCell.Tab.0.bottom" timestamp="1606580794958">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="223" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1606035399774" />
-    <state width="1515" height="223" key="GridCell.Tab.0.center" timestamp="1606035399774">
+    <state width="1515" height="223" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1606580794958" />
+    <state width="1515" height="223" key="GridCell.Tab.0.center" timestamp="1606580794958">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="223" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1606035399774" />
-    <state width="1515" height="223" key="GridCell.Tab.0.left" timestamp="1606035399774">
+    <state width="1515" height="223" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1606580794958" />
+    <state width="1515" height="223" key="GridCell.Tab.0.left" timestamp="1606580794958">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="223" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1606035399774" />
-    <state width="1515" height="223" key="GridCell.Tab.0.right" timestamp="1606035399774">
+    <state width="1515" height="223" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1606580794958" />
+    <state width="1515" height="223" key="GridCell.Tab.0.right" timestamp="1606580794958">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="223" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1606035399774" />
-    <state width="1515" height="277" key="GridCell.Tab.1.bottom" timestamp="1605969551075">
+    <state width="1515" height="223" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1606580794958" />
+    <state width="1515" height="277" key="GridCell.Tab.1.bottom" timestamp="1606253756911">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="277" key="GridCell.Tab.1.bottom/0.0.1536.864@0.0.1536.864" timestamp="1605969551075" />
-    <state width="1515" height="277" key="GridCell.Tab.1.center" timestamp="1605969551075">
+    <state width="1515" height="277" key="GridCell.Tab.1.bottom/0.0.1536.864@0.0.1536.864" timestamp="1606253756911" />
+    <state width="1515" height="277" key="GridCell.Tab.1.center" timestamp="1606253756911">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="277" key="GridCell.Tab.1.center/0.0.1536.864@0.0.1536.864" timestamp="1605969551075" />
-    <state width="1515" height="277" key="GridCell.Tab.1.left" timestamp="1605969551075">
+    <state width="1515" height="277" key="GridCell.Tab.1.center/0.0.1536.864@0.0.1536.864" timestamp="1606253756911" />
+    <state width="1515" height="277" key="GridCell.Tab.1.left" timestamp="1606253756911">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="277" key="GridCell.Tab.1.left/0.0.1536.864@0.0.1536.864" timestamp="1605969551075" />
-    <state width="1515" height="277" key="GridCell.Tab.1.right" timestamp="1605969551075">
+    <state width="1515" height="277" key="GridCell.Tab.1.left/0.0.1536.864@0.0.1536.864" timestamp="1606253756911" />
+    <state width="1515" height="277" key="GridCell.Tab.1.right" timestamp="1606253756911">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1515" height="277" key="GridCell.Tab.1.right/0.0.1536.864@0.0.1536.864" timestamp="1605969551075" />
-    <state x="277" y="77" key="SettingsEditor" timestamp="1606035362069">
+    <state width="1515" height="277" key="GridCell.Tab.1.right/0.0.1536.864@0.0.1536.864" timestamp="1606253756911" />
+    <state x="277" y="77" key="SettingsEditor" timestamp="1606136406210">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="277" y="77" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1606035362069" />
+    <state x="277" y="77" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1606136406210" />
     <state x="586" y="346" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604250522025">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="586" y="346" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.864@0.0.1536.864" timestamp="1604250522025" />
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1605967942579">
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1606252635434">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1605967942579" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1606252635434" />
   </component>
 </project>

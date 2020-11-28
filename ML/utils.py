@@ -2,6 +2,9 @@ import numpy as np
 
 
 def shuffle_in_unison_scary(a, b):
+    """
+    A function that shuffles two arrays in unison
+    """
     rng_state = np.random.get_state()
     np.random.shuffle(a)
     np.random.set_state(rng_state)

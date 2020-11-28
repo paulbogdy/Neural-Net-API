@@ -1,81 +1,113 @@
-import numpy as np
 import time as tm
-import random as rd
-import matplotlib.pyplot as plt
 from ML import utils
-from ML.optimizers import *
-from ML.activations import *
-import multiprocessing
-import os
+from ML.layers import *
+import copy
 
 
 class DFF(object):
-    """description of class"""
+    """
+    A class used to represent a neural_network
+    More exactly a sequential model
 
+    Attributes
+    __________
+
+    input_size : integer, the number of neurons on the input layer
+    layers : the list of layers
+    n_layers : integer, the number of layers
+    n_out : integer, the number of neurons on the output layer
+
+    Methods
+    _______
+
+    add_layer : adds a given layer to the neural network
+                - it needs to be a specific Layer from the layer module
+    forward : does forward propagation for a given input and batch size
+    backward : does backward propagation in order to optimize
+     each value on each layer, to obtain a smaller loss
+    compile : compiles the model, it need to be called after adding all layers
+              it takes as parameters an optimizer from the optimizers module
+              and a loss function from the losses module
+    fit_model_on : trains the model for a given training data, batch size and validation
+    evaluate : evaluates the average loss and accuracy on a test data
+    """
     def __init__(self, input_size):
-        self.activated_neurons = [np.empty(input_size)]
-        self.neurons = [np.empty(input_size)]
-        self.val_loss = 0
-        self.input_size = input_size
-        self.weights = []
-        self.biases = []
-        self.f = []
-        self.b = []
-        self.w = []
-        self.n_layers = 1
-        self.cost = 0
-        self.acc = 0
-        self.n_out = input_size
-        self.delta = []
+        self.__input_size = input_size
+        self.__layers = []
+        self.__n_layers = 1
+        self.__n_out = input_size
+        self.__layers.append(Flatten(input_size))
 
-    def add_layer(self, length, activation):
-        self.n_layers += 1
-        self.activated_neurons.append(np.empty(length).astype(np.float32))
-        self.neurons.append(np.empty(length).astype(np.float32))
-        self.delta.append(np.empty(length).astype(np.float32))
-        self.weights.append(0.22 * (np.random.randn(self.n_out, length) - 0.05).astype(np.float32))
-        self.biases.append(np.zeros(length).astype(np.float32))
-        self.w.append(np.zeros((self.n_out, length)).astype(np.float32))
-        self.b.append(np.zeros(length).astype(np.float32))
-        self.f.append(activation)
-        self.n_out = length
+    def add_layer(self, layer):
+        """
+        Takes a layer and appends it to the layer list
+        :param layer: a given layer
+        """
+        self.__layers.append(layer)
+        self.__n_layers += 1
+        self.__n_out = len(layer)
 
-    def forward(self, input, batch_size):
-        self.activated_neurons[0] = np.array(input.reshape(batch_size, self.input_size)).astype(np.float32)
-        for i in range(1, self.n_layers):
-            np.dot(self.activated_neurons[i - 1], self.weights[i - 1], self.neurons[i])
-            self.neurons[i] += self.biases[i - 1]
-            self.activated_neurons[i], self.neurons[i] = self.f[i - 1](self.neurons[i])
+    def __forward(self, input, batch_size):
+        """
+        Does the forward propagation on the DFF
+        :param input: The input elements of size(batch_size, input_size)
+        :param batch_size: The size of the batch
+        :return: The result of the forward propagation, being the values on the last layer
+        """
+        result = input
+        for i in range(self.__n_layers):
+            result = self.__layers[i](result, batch_size=batch_size)
+        return result
 
-    def backprop(self, output, batch_size):
-        self.acc += np.sum(np.argmax(self.activated_neurons[self.n_layers - 1], axis=1) == output)
-        expected_output = np.zeros(shape=(batch_size, self.n_out)).astype(np.float32)
+    def __backprop(self, input, output, batch_size):
+        """
+        Takes each layer in reverse order, after computing the forward propagation
+        and computes its gradient in order to minimize the loss function after subtracting
+        the gradient from the actual weights
+        :param input: the input batch
+        :param output: the output batch
+        :param batch_size: the batch size
+        """
+        result = self.__forward(input, batch_size)
+        self.acc += np.sum(np.argmax(result, axis=1) == output)
+        expected_output = np.zeros(shape=(batch_size, self.__n_out)).astype(np.float32)
         expected_output[np.arange(batch_size), output] = 1.0
-        cost, self.delta[self.n_layers - 2] = self.loss(self.activated_neurons[self.n_layers - 1]
-                                                                , expected_output)
+        cost, delta = self.__loss(result, expected_output)
         self.cost += cost
-        """
-        for i in range(self.n_layers - 2, 0, -1):
-            self.delta[i] = np.einsum('ij,ij->ij', self.neurons[i + 1], self.delta[i])
-            self.delta[i].dot(self.weights[i].T, self.delta[i - 1])
-        self.delta[0] = np.einsum('ij,ij->ij', self.delta[0], self.neurons[1])
-        """
-        for j in range(batch_size):
-            for i in range(self.n_layers - 2, 0, -1):
-                self.delta[i][j] *= self.neurons[i + 1][j]
-                self.delta[i][j].dot(self.weights[i].T, self.delta[i - 1][j])
-            self.delta[0][j] *= self.neurons[1][j]
-
-        for i in range(self.n_layers - 2, -1, -1):
-            self.b[i] = np.einsum('ij->j', self.delta[i])
-            self.w[i] = np.einsum('ij,ik->jk', self.activated_neurons[i], self.delta[i])
+        for i in range(self.__n_layers-1, -1, -1):
+            if self.__layers[i].trainable:
+                delta = self.__layers[i].train(inputs=self.__layers[i-1].activated, delta=delta)
 
     def compile(self, optimizer, loss):
-        optimizer.fit(self.weights)
-        self.optimizer = optimizer
-        self.loss = loss
+        """
+        Compiles the neural net, adding to each layer the optimizer and setting the loss function
+        as the given one
+        :param optimizer: an optimizer from the optimizers module
+        :param loss: a loss function from the losses module
+        """
+        self.__loss = loss
+        for i in range(self.__n_layers):
+            if self.__layers[i].trainable:
+                self.__layers[i].build(copy.deepcopy(optimizer), len(self.__layers[i-1]))
 
     def fit_model_on(self, input, output, epochs=5, batch_size=32, validation_scale=0, val_in=None, val_out=None):
+        """
+
+        This is pretty much the way in which the model interacts with the user,
+        as it shows in real time how the neural network is performing
+
+        :param input: the training data input
+        :param output: the training data output
+            (must be a single integer representing which neuron should be the most active after forward prop)
+        :param epochs: integer, the number of times we are going to train it over the training data
+                (default is 5)
+        :param batch_size: integer, the size of the batch (default is 32)
+        :param validation_scale: float between 0 and 1, it is used to split the training data
+                into training and validation, optional
+        :param val_in: validation input, optional
+        :param val_out: validation output, optional
+        """
+
         train_acc = np.empty(epochs)
         val_acc = np.empty(epochs)
         train_loss = np.empty(epochs)
@@ -89,15 +121,8 @@ class DFF(object):
         message = "Test {}/{} --- accuracy:{}% --- Loss:{}"
         end_message = "Test {}/{} --- accuracy:{}% --- Loss:{} --- Time:{}"
         end_message_validation = "Test {}/{} --- accuracy:{}% --- Loss:{} --- Val_acc:{}% --- Val_Loss:{} --- Time:{}"
+        utils.shuffle_in_unison_scary(input, output)
         for k in range(epochs):
-            self.neurons[0] = np.empty(shape=(batch_size, self.input_size))
-            self.activated_neurons[0] = np.empty(shape=(batch_size, self.input_size))
-            for i in range(1, self.n_layers):
-                self.neurons[i] = np.empty(shape=(batch_size, len(self.biases[i - 1]))).astype(np.float32)
-                self.activated_neurons[i] = np.empty(shape=(batch_size, len(self.biases[i - 1]))).astype(np.float32)
-            for i in range(self.n_layers - 1):
-                self.delta[i] = np.empty(shape=(batch_size, len(self.biases[i]))).astype(np.float32)
-            utils.shuffle_in_unison_scary(input, output)
             print("Epoch {}/{}".format(k + 1, epochs))
             time = tm.time()
             epoch_acc = 0
@@ -106,12 +131,8 @@ class DFF(object):
                 self.cost = 0
                 self.acc = 0
                 length = min(i + batch_size, len(input)) - i
-                self.forward(input[i * batch_size:(i + 1) * batch_size], batch_size)
-                self.backprop(output[i * batch_size:(i + 1) * batch_size], batch_size)
-                for j in range(self.n_layers - 2, -1, -1):
-                    self.optimizer.optimize(weights=self.weights[j], biases=self.biases[j],
-                                            weights_modifier=self.w[j]/batch_size, biases_modifier=self.b[j]/batch_size,
-                                            index=j)
+                self.__backprop(input[i * batch_size:(i + 1) * batch_size],
+                              output[i * batch_size:(i + 1) * batch_size], batch_size)
                 print(message.format("{:5.0f}".format(i), len(input) // batch_size,
                                      "{:7.2f}".format(100 * self.acc / length),
                                      "{:7.4f}".format(self.cost / (2 * length))), end="\r")
@@ -138,39 +159,23 @@ class DFF(object):
             return train_acc, train_loss
         else:
             return train_acc, train_loss, val_acc, val_loss
-    """
-    def save_model(self, name):
-        with open(name, "w") as f:
-            # date simple
-            f.write('%s' % self.input_size + ' ')
-            f.write('%s' % self.n_layers + ' ')
-            f.write('%s' % self.learning_rate + ' ')
-            f.write('%s' % self.n_momentum + ' ')
-            # afisez layerele
-            for i in range(1, self.n_layers - 1 + 1):
-                # lungimea
-                f.write('%s' % len(self.biases[i]) + ' ')
-                # activare
-                f.write(self.f[i] + ' ')
-                # afisez weight-urile
-                for x in range(len(self.biases[i - 1])):
-                    for y in range(len(self.biases[i])):
-                        f.write('%s' % self.weights[i][y][x] + ' ')
-                # afisez bias-urile
-                for x in range(len(self.biases[i])):
-                    f.write('%s' % self.biases[i][x] + ' ')
-    """
+
     def evaluate(self, input, output):
-        self.neurons[0] = np.empty(shape=(len(input), self.input_size))
-        self.activated_neurons[0] = np.empty(shape=(len(input), self.input_size))
-        for i in range(1, self.n_layers):
-            self.neurons[i] = np.empty(shape=(len(input), len(self.biases[i - 1]))).astype(np.float32)
-            self.activated_neurons[i] = np.empty(shape=(len(input), len(self.biases[i - 1]))).astype(np.float32)
-        for i in range(self.n_layers - 1):
-            self.delta[i] = np.empty(shape=(len(input), len(self.biases[i]))).astype(np.float32)
-        self.forward(input, len(input))
-        accuracy = np.sum(np.argmax(self.activated_neurons[self.n_layers - 1], axis=1) == output)
-        expected_output = np.zeros(shape=(len(input), self.n_out)).astype(np.float32)
+        """
+        Given an input and an expected output this function calculates the average loss and accuracy
+        :param input: the input data
+        :param output: the output data
+        :return: a tuple of accuracy and loss
+        """
+        for layer in self.__layers:
+            if isinstance(layer, Dropout):
+                layer.set_dropout(False)
+        result = self.__forward(input, len(input))
+        for layer in self.__layers:
+            if isinstance(layer, Dropout):
+                layer.set_dropout(True)
+        accuracy = np.sum(np.argmax(result, axis=1) == output)
+        expected_output = np.zeros(shape=(len(input), self.__n_out)).astype(np.float32)
         expected_output[np.arange(len(input)), output] = 1.0
-        loss = self.loss(self.activated_neurons[self.n_layers - 1], expected_output)[0]
+        loss = self.__loss(result, expected_output)[0]
         return 100 * accuracy / len(input), loss / len(input)
