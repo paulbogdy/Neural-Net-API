@@ -43,3 +43,46 @@ Must respect 3 properties:
 * $$ f(x) = 0 => x = 0 $$
 * $$ f(x + y) \leq f(x) + f(y) \text{  (the triangle inequality)} $$
 * $$ \forall \alpha \in \mathbb{R} , f(\alpha x) = |\alpha|f(x) $$
+
+Common Norms:
+$$ L^n = (\sum_{k} |x_k|^n)^{\frac{1}{n}}$$
+* $L^2$ also known as Euclidean norm (distance): $$ L^2 = \sqrt{\sum_{k} |x_k|^2}$$
+  * Most common, mostly written as $||x||$
+  * Squared $L_2$ is more used because it is easier to compute: $x^tx$
+* $L^1$ also known in 2D planes as Manhattan distance: $$ L^1 = \sum_{k} |x_k| $$
+  * Commonely used when the difference between zero and nonzero elements is important
+* $L^{\infty}$ pretty much taking the greates element, also known as max norm
+* Frobenius Norm, basically $L^2$ but for matrices: $$||A|| = \sqrt{\sum_{i,j} A_{i,j}^2}$$
+
+## 2.6 Special Kinds of Matrices and Vectors
+* Diagonal:
+  * Has nonzero entries only on the main diagonal
+  * Easy to multiply
+  * Easy invertible
+* Symetric: 
+  * $A = A^T$
+* Unit Vector (Normal vector):
+  * $ || x || = 1 $
+* Orthogonal Matrix:
+  * Orthonormal vectors, 2 unit vectors that are perpendicular on eachother: $x^Ty = 0$
+  * Squared matrix that has all rows and columns mutually orthonormal
+
+## 2.7 Eigendecomposition
+A way to decompose a matrix into eigenvectors and eigenvalues.  
+If we see a matrix as a transformation, eigenvectors are those vectors that are only scaled after the transformation is applied: $Av = \lambda v$.  
+Any scaled eigenvector is an eigenvector as well, so we only care about unit eigenvectors.  
+Lambda is that eigenvalue, is the value with which the vector is scaled.  
+If A has n linearly independent eigenvectors, we can concatenate them one per column, so that we have an eigendecomposition: $A = V{diag(\lambda)}V^{-1}$ 
+A matrix can be definite if it has real eigenvalues:
+* Positive definite <= all positive
+* Positive semidefinite <= all positive or zero
+* Negative semidefinite <= all negative or zero
+* Negative definite <= all negative
+
+## 2.8 Singular Value Decomposition (SVD)
+It is another way to factorize a matrix, but more generally applicable.  
+We want to find a set of orthonormal vectors that when transformed by A will remain orthonormal:  
+$Av_i = \sigma_i u_i$ -> $A[v_1 .. v_n] = [\sigma_1 u_1 .. \sigma_n u_n]$ -> $A[v_1 .. v_n] = [u_1 .. u_n]{diag(\sigma)}$ -> $AV = U\Sigma$ -> $A = U\Sigma V^{-1}$  
+* $\Sigma$ -> diagonal matrix containing the singular values of A
+* U -> orthogonal matrix containing left-singular vectors of A ( the eigenvectors of $AA^T$ )
+* V -> orthogonal matrix containing right-singular vectors of A ( the eigenvectors of $A^TA$ )
